@@ -11,7 +11,7 @@ class SearchBar extends Component{
     this.onSubmitHanlder=this.onSubmitHanlder.bind(this);
   }
   onInputChange(e){
-    
+
     this.setState({term:e.target.value});
 
   }
@@ -25,7 +25,7 @@ class SearchBar extends Component{
       <form className="input-group" onSubmit={this.onSubmitHanlder}>
         <input
         value={this.state.term}
-        placeholder="Get a five-day forecast in your favorite cities"
+        placeholder="Get a five-day forecast in your favorite cities in US"
         onChange={this.onInputChange}
         className="form-control" />
         <span className="input-group-btn">
