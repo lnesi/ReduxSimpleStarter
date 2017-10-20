@@ -7,6 +7,7 @@ import store from './store';
 
 import PostsIndex from './components/posts_index';
 import PostsNew from './components/posts_new';
+import PostsShow from './components/posts_show';
 
 ReactDOM.render(
   <Provider store={store}>
@@ -14,6 +15,7 @@ ReactDOM.render(
       <div>
         <Switch>
           <Route path="/posts/new" component={PostsNew}/>
+          <Route path="/posts/:id" component={PostsShow} />
           <Route exact path="/"  component={PostsIndex} />
         </Switch>
       </div>
