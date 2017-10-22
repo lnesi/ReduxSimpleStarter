@@ -1,3 +1,17 @@
 .comment-list{
 	margin-top:10px;
 }
+
+/* initial state animation keyfranme*/
+.fade-enter{
+	transform:rotateX(90deg);
+	right:50px;
+	opacity:0;
+}
+/* end state animation keyfranme*/
+.fade-enter-active{
+	transform:rotateX(0deg);
+	right:0px;
+	opacity: 1;
+	transition:.5s ease-in all;
+}
