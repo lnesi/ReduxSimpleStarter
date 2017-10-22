@@ -1,36 +1,52 @@
-import _$ from 'jquery';
+import jsdom  from 'jsdom';
+//if we import $ will try to boot inmediatly to set itself by importing 
+//the jqeury or any string we have the constructor of jqeury
+import jqeury from 'jquery'; 
+import TestUtils from 'react-addons-test-utils';
+// When ever we use JSX we need to import react
 import React from 'react';
 import ReactDOM from 'react-dom';
-import TestUtils from 'react-addons-test-utils';
-import jsdom from 'jsdom';
 import chai, { expect } from 'chai';
-import chaiJquery from 'chai-jquery';
 import { Provider } from 'react-redux';
 import { createStore } from 'redux';
 import reducers from '../src/reducers';
+import chaiJquery from 'chai-jquery';
 
+// Set up testing enviroment to run like a browser with a virtual document in cl JSDom
+//window in tghe browser is the global scope so we create similar with global
+// this is necesary for jquery and the things it need to run
 global.document = jsdom.jsdom('<!doctype html><html><body></body></html>');
 global.window = global.document.defaultView;
-global.navigator = global.window.navigator;
-const $ = _$(window);
+const $ = jqeury(global.window);
 
-chaiJquery(chai, chai.util, $);
 
-function renderComponent(ComponentClass, props = {}, state = {}) {
-  const componentInstance =  TestUtils.renderIntoDocument(
-    <Provider store={createStore(reducers, state)}>
-      <ComponentClass {...props} />
+//Build renderComponent helper that should render a given react component
+
+function renderComponent(ComponentClass, props, state){
+  const renderedInstance = TestUtils.renderIntoDocument(
+    <Provider store={createStore(reducers,state)}>
+      <ComponentClass {...props}/>
     </Provider>
   );
-
-  return $(ReactDOM.findDOMNode(componentInstance));
+  //Returns HTML from renderedInstance and pass it to jequery to create a jq element
+  // so then we will be able to use chai-jquery
+  return $(ReactDOM.findDOMNode(renderedInstance)); 
 }
 
-$.fn.simulate = function(eventName, value) {
-  if (value) {
+
+//buils helper for simulating events
+
+$.fn.simulate=function(eventName,value){
+  //Simulate.click , .change 
+  
+  if(value){
     this.val(value);
   }
-  TestUtils.Simulate[eventName](this[0]);
-};
+  TestUtils.Simulate[eventName](this[0]); 
+}
 
-export {renderComponent, expect};
+// setup chai-jquery for accertions in the virtual document
+
+chaiJquery(chai,chai.util,$);
+
+export { renderComponent, expect };
