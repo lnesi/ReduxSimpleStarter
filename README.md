@@ -1,4 +1,14 @@
 # ReduxSimpleStarter
+High Order Component for auth Check
+
+
+// psudo code for explanation
+import Authentication  //This is my HOC
+import Resources // this is the component i want to wrap
+const ComposeComponent = Authentication(Resources);
+
+
+
 
 Interested in learning [Redux](https://www.udemy.com/react-redux/)?
 
