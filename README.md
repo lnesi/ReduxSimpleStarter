@@ -1,4 +1,6 @@
 # ReduxSimpleStarter
+Middlewares overview
+Manual Write a Middleware that handles promise
 
 Interested in learning [Redux](https://www.udemy.com/react-redux/)?
 
