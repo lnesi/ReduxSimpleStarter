@@ -1,0 +1,3 @@
+const SIGN_IN = 'SIGN_IN';
+const AUTH_USER = 'AUTH_USER';
+const UNAUTH_USER = 'UNAUTH_USER';
