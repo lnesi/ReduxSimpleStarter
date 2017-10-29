@@ -1,3 +1,5 @@
-const SIGN_IN = 'SIGN_IN';
-const AUTH_USER = 'AUTH_USER';
-const UNAUTH_USER = 'UNAUTH_USER';
+export const AUTH_LOADING = 'AUTH_LOADING';
+export const AUTH_USER = 'AUTH_USER';
+export const UNAUTH_USER = 'UNAUTH_USER';
+export const AUTH_ERROR = 'AUTH_ERROR';
+

@@ -1,30 +1,73 @@
-import { AUTH_USER } from './types';
 import axios from 'axios';
 import { browserHistory } from 'react-router';
+import {
+	AUTH_LOADING ,
+	AUTH_USER, 
+	UNAUTH_USER, 
+	AUTH_ERROR 
+} from './types';
+
+
 
 const ROOT_URL="http://localhost:3090";
 
 export function signinUser({email,password}){
 	
 	return function(dispatch){
-		dispatch({type:"SIGN_LOADING", payload:null});
+		dispatch({type:AUTH_LOADING});
 		//submit to server
 		const request= axios.post(`${ROOT_URL}/signin`,{email,password});
 		// if is good
-		request.then((resp)=>{
+		request.then((response)=>{
+			//dispatch(authOK(response.data.token));
 			//update state to indicate user authenticated
-			dispatch({type:"AUTH_USER"});
+			dispatch({type:AUTH_USER});
 			// save JWT 
-			
+			//localStorage.setItem('token',response.data.token);
 			// redirect to protected route
-			browserHistory.push("/feature");
+			// browserHistory.push("/feature");
+			dispatch(authOK(response.data.token));
 		});
 
 		//if is bad
 		request.catch((error)=>{
-			dispatch({type:"SIGN_IN_ERROR",payload:error});
+			//console.log(error);
+			// show an error to the user
+			dispatch(authError('Bad Sign In Info'));
 		});
-		// show an error to the user
+		
 	}
 	
 };
+
+export function signupUser({email,password,full_name}){
+	return function(dispatch){
+		dispatch({type:AUTH_LOADING});
+		const request=axios.post(`${ROOT_URL}/signup`,{email,password,full_name})
+		.then((response)=>{
+			dispatch(authOK(response.data.token));
+		})
+		.catch(error=>dispatch(authError(error.response.data.error)));
+		
+	}
+}
+
+export function authOK(token){
+	localStorage.setItem('token',token);
+	browserHistory.push("/feature");
+	return ({type:AUTH_USER});
+}
+
+export function authError(error){
+	console.log("AUTH_ERROR",error)
+	return {
+		type:AUTH_ERROR,
+		payload:error
+	};
+}
+
+export function signoutUser(){
+	//localStorage.removeItem('token');
+	localStorage.clear();
+	return  {type:UNAUTH_USER};
+}
