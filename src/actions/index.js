@@ -4,7 +4,8 @@ import {
 	AUTH_LOADING ,
 	AUTH_USER, 
 	UNAUTH_USER, 
-	AUTH_ERROR 
+	AUTH_ERROR,
+	FETCH_MESSAGE 
 } from './types';
 
 
@@ -59,7 +60,6 @@ export function authOK(token){
 }
 
 export function authError(error){
-	console.log("AUTH_ERROR",error)
 	return {
 		type:AUTH_ERROR,
 		payload:error
@@ -70,4 +70,17 @@ export function signoutUser(){
 	//localStorage.removeItem('token');
 	localStorage.clear();
 	return  {type:UNAUTH_USER};
+}
+
+export function fetchMessage(){
+	return function(dispatch){
+		axios.get(`${ROOT_URL}/`,
+			{headers:{authorization:localStorage.getItem('token')}}
+		).then((response)=>{
+			dispatch({type:FETCH_MESSAGE,payload:response.data.message});
+		}).catch((error)=>{
+			browserHistory.push("/");
+			dispatch({type:UNAUTH_USER});
+		});
+	}
 }
